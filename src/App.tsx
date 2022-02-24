@@ -1,60 +1,27 @@
 import React, { FC, useEffect, useState, useCallback } from 'react';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { Form } from './components/Form/Form';
 import { MessageList } from './components/MessageList/MessageList';
 import { nanoid } from 'nanoid';
-
-export interface Message {
-    id: string;
-    text: string;
-    author: string;
-}
-
-const defaultMessages = [
-    {
-        id: '1',
-        author: 'Geekbrains',
-        text: 'Welcome to the chat',
-    },
-];
+import { Main } from './pages/Main';
+import { Chats } from './pages/Chats';
+import { About } from './pages/About';
+import { NotFound } from './pages/NotFound';
+import { NavBar } from './components/NavBar/NavBar';
 
 export const App: FC = () => {
-    const [messages, setMessages] = useState<Message[]>(defaultMessages);
-
-    useEffect(() => {
-        if (messages.length && messages[messages.length - 1].author === 'User') {
-            const timeout = setTimeout(
-                () =>
-                    handleSendMessage({
-                        text: 'Im BOT',
-                        author: 'BOT',
-                    }), 1500
-            );
-
-            return () => {
-                clearTimeout(timeout);
-            };
-        }
-    }, [messages]);
-
-    const handleSendMessage = useCallback(
-        ({ text, author }: { text: string; author: string }) => {
-            setMessages((prevMessages) => [
-                ...prevMessages,
-                {
-                    id: nanoid(),
-                    author,
-                    text,
-                },
-            ]);
-        },
-        []
-    );
-
     return (
-        <>
-            <h1>Welcome to react</h1>
-            <MessageList messages={messages} />
-            <Form addMessage={handleSendMessage} />
-        </>
+        <BrowserRouter>
+            <NavBar />
+            <Switch>
+                <Route exact path="/" component={Main} />
+                <Route exact path="/chats">
+                    <Redirect to="/chats/1" />
+                </Route>
+                <Route path="/chats/:chatId" component={Chats} />
+                <Route exact path="/about" component={About} />
+                <Route path="*" component={NotFound} />
+            </Switch>
+        </BrowserRouter>
     );
 };
