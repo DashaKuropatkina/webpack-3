@@ -1,52 +1,31 @@
-import React, { useRef, useState, FC, useEffect, useContext } from "react";
+import React, { useState, FC } from "react";
 import { Input, Button } from '@mui/material';
-import { ThemeContext } from '../../utils/ThemeContext';
+import { useDispatch } from "react-redux";
+import { addMessage } from '../../store/messages/actions';
+import { useParams } from "react-router";
 
-interface Message {
-    text: string;
-    author: string;
-}
-
-interface FormProps {
-    addMessage: (message: Message) => void;
-}
-
-export const Form: FC<FormProps> = ({ addMessage }) => {
-    const { dark, toggleDark } = useContext(ThemeContext);
-
-    const handleOnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        if (toggleDark) {
-            toggleDark();
-        }
-    };
-
+export const Form: FC = () => {
+    const dispatch = useDispatch();
     const [text, setText] = useState('');
+    const { chatId } = useParams<{ chatId?: string }>();
 
-    const handleText = (ev: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
         ev.preventDefault();
-        addMessage({
-            text,
-            author: 'User'
-        });
+        if (chatId) {
+            dispatch(addMessage({
+                chatId,
+                text,
+                author: 'User',
+            })
+            );
+        }
         setText('');
     };
 
-    const ref = useRef(null);
-
-    useEffect(() => {
-        ref.current.focus();
-    });
-
     return (
-        <>
-            <form onSubmit={handleText}>
-                <Input ref={ref} value={text} onChange={(ev) => setText(ev.target.value)} />
-                <Button variant="contained" type="submit">Send</Button>
-            </form>
-
-            <h1>{dark ? '🌙' : '🌞'}</h1>
-            <button onClick={handleOnClick}>Toggle dark mode</button>
-        </>
+        <form onSubmit={handleSubmit}>
+            <Input value={text} onChange={(ev) => setText(ev.target.value)} />
+            <Button variant="contained" type="submit">Send</Button>
+        </form>
     );
-}
+};
