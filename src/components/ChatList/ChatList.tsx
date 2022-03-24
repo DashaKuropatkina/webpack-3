@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Chat } from '../../store/chatlist/reducer';
+import { Chat } from '../../store/chatlist/types';
 import { nanoid } from 'nanoid';
 import { addChat, deleteChat } from '../../store/chatlist/actions';
 import { createMessageChat, deleteMessageChat } from '../../store/messages/actions';

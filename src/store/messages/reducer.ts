@@ -1,27 +1,11 @@
 import { ADD_MESSAGE, CREATE_MESSAGE_CHAT, DELETE_MESSAGE_CHAT } from './actions';
 import { Reducer } from 'redux';
 import { nanoid } from 'nanoid';
+import { MessagesActions, MessagesState } from './types';
 
-interface Message {
-    id: string;
-    text: string;
-    author: string;
-}
+const initialChatList: MessagesState = {}
 
-export interface MessageState {
-    [key: string]: Message[];
-}
-
-interface MessagesAction {
-    type: string;
-    text: string;
-    author: string;
-    chatId: string;
-}
-
-const initialChatList: MessageState = {}
-
-export const messagesReducer: Reducer<MessageState, MessagesAction> = (
+export const messagesReducer: Reducer<MessagesState, MessagesActions> = (
     state = initialChatList,
     action
 ) => {

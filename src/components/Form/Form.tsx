@@ -1,8 +1,9 @@
 import React, { useState, FC } from "react";
 import { Input, Button } from '@mui/material';
 import { useDispatch } from "react-redux";
-import { addMessage } from '../../store/messages/actions';
+import { addMessageWithThunk } from '../../store/messages/actions';
 import { useParams } from "react-router";
+import { AUTHORS } from "../../constants";
 
 export const Form: FC = () => {
     const dispatch = useDispatch();
@@ -12,10 +13,10 @@ export const Form: FC = () => {
     const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
         ev.preventDefault();
         if (chatId) {
-            dispatch(addMessage({
+            dispatch(addMessageWithThunk({
                 chatId,
                 text,
-                author: 'User',
+                author: AUTHORS.user,
             })
             );
         }
