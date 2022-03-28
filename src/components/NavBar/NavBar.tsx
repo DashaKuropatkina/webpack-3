@@ -22,6 +22,16 @@ const navigate = [
         to: '/profile',
         name: 'Профиль',
     },
+    {
+        id: 5,
+        to: '/articles',
+        name: 'Статьи',
+    },
+    {
+        id: 6,
+        to: '/events',
+        name: 'Статьи',
+    }
 ];
 
 export const NavBar: FC = () => {
