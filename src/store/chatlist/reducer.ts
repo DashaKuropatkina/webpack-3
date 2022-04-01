@@ -1,4 +1,4 @@
-import { ADD_CHAT, DELETE_CHAT } from './actions';
+import { ADD_CHAT, DELETE_CHAT, SET_CHAT } from './actions';
 import { Reducer } from 'redux';
 import { Chat, ChatActions } from './types';
 
@@ -17,6 +17,9 @@ export const chatListReducer: Reducer<Chat[], ChatActions> = (
     }
     case DELETE_CHAT: {
       return state.filter(({ id }) => id !== action.chatId);
+    }
+    case SET_CHAT: {
+      return action.payload;
     }
     default: {
       return state;

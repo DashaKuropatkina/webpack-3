@@ -3,21 +3,18 @@ import { Form } from '../components/Form/Form';
 import { MessageList } from '../components/MessageList/MessageList';
 import { useParams, Redirect } from 'react-router-dom';
 import { ChatList } from '../components/ChatList/ChatList';
-import { useSelector } from 'react-redux';
-import { selectMessages } from './../store/messages/selectors';
 
-export const Chats: FC = () => {
+export const Chats: FC<any> = ({ msgs }) => {
     const { chatId } = useParams<{ chatId?: string }>();
-    const messages = useSelector(selectMessages);
 
-    if (chatId && !messages[chatId]) {
+    if (chatId && !msgs[chatId]) {
         return <Redirect to="/chats" />;
     }
 
     return (
         <>
             <ChatList />
-            <MessageList messages={chatId ? messages[chatId] : []} />
+            <MessageList messages={chatId ? msgs[chatId] : []} />
             <Form />
         </>
     );
